@@ -3,6 +3,9 @@
 *.env
 .aws/
 
+# Vector database (regenerate with build_index.py)
+chroma_db/
+
 # Python
 __pycache__/
 *.pyc
