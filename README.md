@@ -25,6 +25,7 @@ Coming from an IT support background (application support, incident resolution, 
 - **Claude (Haiku 4.5)** via **AWS Bedrock** — inference is authenticated through IAM credentials rather than a direct API key, keeping usage inside the AWS security boundary
 - **Anthropic Python SDK** (`AnthropicBedrock` client)
 - **ChromaDB** — local vector store for retrieval-augmented generation (RAG) over past resolution notes
+- **FastAPI** — exposes triage as an HTTP endpoint with auto-generated interactive docs
 
 ## How it works
 
@@ -58,7 +59,22 @@ export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 export AWS_REGION="us-east-1"
 
 python3 build_index.py    # builds the local vector index (run once, or after editing resolution_notes.csv)
-python3 triage.py
+python3 triage.py         # run as a CLI tool
+```
+
+To run as an HTTP API instead:
+
+```bash
+pip install fastapi "uvicorn[standard]"
+uvicorn api:app --reload
+```
+
+Then visit `http://127.0.0.1:8000/docs` for interactive API documentation, or send a POST request to `/triage`:
+
+```bash
+curl -X POST http://127.0.0.1:8000/triage \
+  -H "Content-Type: application/json" \
+  -d '{"description": "VPN authentication fails even though my password is correct"}'
 ```
 
 Requires an AWS account with model access granted for Claude Haiku 4.5 in Amazon Bedrock, and an IAM user with Bedrock permissions.
@@ -70,7 +86,10 @@ Tested against 5 tickets from `tickets.csv`, the model classified all 5 categori
 ## Roadmap
 
 - [x] Retrieval-augmented generation (RAG) over past resolution notes
-- [ ] Wrap in a lightweight FastAPI service
+- [x] Wrap in a lightweight FastAPI service
+- [ ] Cloud deployment (AWS Lambda + API Gateway)
+- [ ] Infrastructure as code (Terraform)
+- [ ] CI/CD pipeline (GitHub Actions)
 - [ ] Simple frontend for submitting and reviewing tickets
 - [ ] Expand and formalise the evaluation dataset beyond the initial 25 sample tickets
 
