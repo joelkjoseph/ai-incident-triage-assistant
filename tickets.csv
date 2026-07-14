@@ -1,0 +1,26 @@
+ticket_id,title,description,category,priority,assigned_team
+INC-0001,Cannot connect to VPN,"Working from home. VPN says authentication failed even though password is correct. Need access urgently before meeting.",Access Management,High,Infrastructure
+INC-0002,Laptop won't boot,"Pressed power button but only black screen appears. Charging light is on.",Hardware,Critical,Desktop Support
+INC-0003,Outlook keeps crashing,"Outlook opens for a few seconds then closes automatically. Restarted PC twice.",Software,Medium,Application Support
+INC-0004,Printer offline,"Office printer shows offline for everyone on the floor.",Hardware,Medium,Desktop Support
+INC-0005,Shared drive access denied,"Previously had access to Finance shared folder. Today it says Access Denied.",Access Management,High,Identity & Access
+INC-0006,Wi-Fi disconnecting,"Wireless connection drops every 5-10 minutes. Other colleagues nearby have same issue.",Network,High,Network Team
+INC-0007,Slow computer,"Laptop became extremely slow after Windows update. Takes 10 minutes to log in.",Hardware,Low,Desktop Support
+INC-0008,Payroll application error,"Unable to generate monthly payroll report. Error code PAY-504 displayed.",Software,High,Business Applications
+INC-0009,Password reset request,"Forgot Windows password after returning from leave.",Access Management,Low,Service Desk
+INC-0010,Teams microphone not working,"Can hear others but nobody can hear me in Microsoft Teams meetings.",Software,Medium,Desktop Support
+INC-0011,Internet outage,"Entire office has no internet connectivity since 9:15 AM.",Network,Critical,Network Team
+INC-0012,Email not receiving,"Can send emails but not receiving any new messages since yesterday.",Email,Medium,Messaging Team
+INC-0013,Blue screen error,"Laptop crashed with blue screen while opening Excel. Happened twice today.",Hardware,High,Desktop Support
+INC-0014,New employee account,"Please create AD account, email, and VPN access for new starter joining Monday.",User Provisioning,Medium,Identity & Access
+INC-0015,Application license expired,"Cannot use Adobe Acrobat because license expired unexpectedly.",Software,Medium,Application Support
+INC-0016,Database connection failed,"Internal reporting application cannot connect to SQL database.",Database,Critical,Database Team
+INC-0017,VPN very slow,"VPN connects successfully but all internal applications are extremely slow.",Network,Medium,Infrastructure
+INC-0018,Excel macro blocked,"Excel reports security warning and disables company macro workbook.",Software,Low,Application Support
+INC-0019,Security alert,"Received suspicious email asking to verify Microsoft account credentials.",Security,High,Security Operations
+INC-0020,Monitor flickering,"External monitor randomly flickers throughout the day.",Hardware,Low,Desktop Support
+INC-0021,File server unavailable,"Cannot access departmental file server. Multiple users affected.",Infrastructure,Critical,Infrastructure
+INC-0022,CRM login issue,"Sales team unable to log into CRM after password change.",Access Management,High,Business Applications
+INC-0023,VPN MFA problem,"Authenticator app approves request but VPN still refuses login.",Access Management,High,Identity & Access
+INC-0024,System running slow,"Everything feels slow today. Browser, Outlook, Excel. Not sure what's wrong.",General Support,Low,Service Desk
+INC-0025,Payment application outage,"Finance reports payment processing system unavailable for all users.",Software,Critical,Business Applications

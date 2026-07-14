@@ -1,0 +1,14 @@
+# Environment / secrets
+.env
+*.env
+.aws/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor clutter
+.DS_Store
+.vscode/
