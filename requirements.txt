@@ -1,0 +1,5 @@
+anthropic[bedrock]
+chromadb
+fastapi
+uvicorn[standard]
+mangum
