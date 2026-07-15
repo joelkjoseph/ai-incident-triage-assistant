@@ -26,6 +26,7 @@ Coming from an IT support background (application support, incident resolution, 
 - **Anthropic Python SDK** (`AnthropicBedrock` client)
 - **ChromaDB** — local vector store for retrieval-augmented generation (RAG) over past resolution notes
 - **FastAPI** — exposes triage as an HTTP endpoint with auto-generated interactive docs
+- **Docker** — containerized for consistent, portable deployment
 
 ## How it works
 
@@ -77,6 +78,22 @@ curl -X POST http://127.0.0.1:8000/triage \
   -d '{"description": "VPN authentication fails even though my password is correct"}'
 ```
 
+### Running with Docker
+
+The project is fully containerized. To build and run it in Docker instead of a local Python environment:
+
+```bash
+docker build -t triage-app .
+
+docker run -p 8000:8000 \
+  -e AWS_ACCESS_KEY_ID="your-access-key-id" \
+  -e AWS_SECRET_ACCESS_KEY="your-secret-access-key" \
+  -e AWS_REGION="us-east-1" \
+  triage-app
+```
+
+Then visit `http://127.0.0.1:8000/docs`, same as running locally. The vector index is built automatically inside the image at build time, so the container is ready to serve requests as soon as it starts.
+
 Requires an AWS account with model access granted for Claude Haiku 4.5 in Amazon Bedrock, and an IAM user with Bedrock permissions.
 
 ## Sample results
@@ -87,7 +104,8 @@ Tested against 5 tickets from `tickets.csv`, the model classified all 5 categori
 
 - [x] Retrieval-augmented generation (RAG) over past resolution notes
 - [x] Wrap in a lightweight FastAPI service
-- [ ] Cloud deployment (AWS Lambda + API Gateway)
+- [x] Containerize with Docker
+- [ ] Cloud deployment (Amazon ECR + AWS App Runner)
 - [ ] Infrastructure as code (Terraform)
 - [ ] CI/CD pipeline (GitHub Actions)
 - [ ] Simple frontend for submitting and reviewing tickets
