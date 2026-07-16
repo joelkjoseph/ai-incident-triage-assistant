@@ -29,6 +29,16 @@ Coming from an IT support background (application support, incident resolution, 
 - **Docker** — containerized for consistent, portable deployment
 - **AWS Lambda + Function URL** — serverless deployment, publicly reachable over HTTPS
 - **Terraform** — infrastructure as code for a reproducible parallel deployment
+- **GitHub Actions** — CI/CD: automated syntax checks and Docker build verification on every push, plus automatic build-push-deploy to Lambda on push to main
+
+## CI/CD
+
+Every push to `main` triggers two independent GitHub Actions workflows:
+
+- **CI** (`.github/workflows/ci.yml`) — checks out the code, verifies Python syntax, installs dependencies, and confirms the Docker image builds successfully. Runs on every push and pull request, no AWS access required.
+- **Deploy** (`.github/workflows/deploy.yml`) — builds the Lambda-specific image, pushes it to Amazon ECR, updates the live Lambda function to use it, and waits for the update to complete. Authenticates using AWS credentials stored as encrypted GitHub Secrets, never committed to the repository.
+
+In practice, this means pushing a code change is the only step required to update the live deployment — no manual Docker commands or console clicks.
 
 ## Live demo
 
@@ -141,7 +151,7 @@ Tested against 5 tickets from `tickets.csv`, the model classified all 5 categori
 - [x] Containerize with Docker
 - [x] Cloud deployment (AWS Lambda, public Function URL)
 - [x] Infrastructure as code (Terraform)
-- [ ] CI/CD pipeline (GitHub Actions)
+- [x] CI/CD pipeline (GitHub Actions)
 - [ ] Simple frontend for submitting and reviewing tickets
 - [ ] Expand and formalise the evaluation dataset beyond the initial 25 sample tickets
 
