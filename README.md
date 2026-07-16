@@ -75,6 +75,16 @@ The fix was adding an explicit `is_valid_ticket` field to the output schema, wit
 
 This is the kind of gap that only shows up once you actively try to break your own system — which is exactly what happened here.
 
+## Architecture
+
+**Runtime request flow:**
+
+![Runtime architecture](assets/architecture-runtime.png)
+
+**CI/CD and infrastructure:**
+
+![CI/CD and infrastructure](assets/architecture-cicd.png)
+
 ## Deploying to serverless: three filesystem issues, one pattern
 
 Getting this running on AWS Lambda surfaced a cluster of related issues, all stemming from the same root cause: Lambda's filesystem is read-only at runtime except for `/tmp`.
@@ -142,6 +152,13 @@ docker run -p 8000:8000 \
 Then visit `http://127.0.0.1:8000/docs`, same as running locally. The vector index is built automatically inside the image at build time, so the container is ready to serve requests as soon as it starts.
 
 Requires an AWS account with model access granted for Claude Haiku 4.5 in Amazon Bedrock, and an IAM user with Bedrock permissions.
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Frontend demo](assets/screenshots/frontend-demo.png) | ![GitHub Actions passing](assets/screenshots/actions-passing.png) |
+| Live triage console | CI/CD pipeline, green on every push |
 
 ## Evaluation results
 
