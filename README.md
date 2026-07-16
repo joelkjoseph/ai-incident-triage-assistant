@@ -28,6 +28,7 @@ Coming from an IT support background (application support, incident resolution, 
 - **FastAPI** — exposes triage as an HTTP endpoint with auto-generated interactive docs
 - **Docker** — containerized for consistent, portable deployment
 - **AWS Lambda + Function URL** — serverless deployment, publicly reachable over HTTPS
+- **Terraform** — infrastructure as code for a reproducible parallel deployment
 
 ## Live demo
 
@@ -70,6 +71,18 @@ Getting this running on AWS Lambda surfaced a cluster of related issues, all ste
 3. **Cold start timing**: loading ChromaDB during Lambda's initialization phase came close to the platform's fixed 10-second init limit. Resolved by increasing the function's allocated memory, which proportionally increases available CPU during startup.
 
 None of these were bugs in the application logic — they were all specific to how Lambda's execution environment differs from a normal server, and they only surfaced by actually deploying and reading the real error traces rather than assuming a container that works locally will behave identically in a serverless environment.
+
+## Infrastructure as Code with Terraform
+
+A second, parallel deployment of the same container image is defined entirely as code in `terraform/`, provisioning its own IAM role, Lambda function, and public Function URL from scratch with `terraform apply`. This is kept separate from the manually-built deployment above so the working version stays untouched during development.
+
+Getting the Function URL to actually respond publicly surfaced another layered issue, this time in AWS's permission model rather than Lambda's filesystem:
+
+1. A resource-based policy statement allowing `lambda:InvokeFunctionUrl` is required, but isn't enough on its own.
+2. Since October 2025, AWS additionally requires a second permission, `lambda:InvokeFunction`, conditioned on the request being routed through a Function URL specifically. This uses a different mechanism (the CLI's `--invoked-via-function-url` flag) than the first permission, and isn't currently exposed as a clean, direct argument on this version of Terraform's AWS provider.
+3. The console had added both automatically when the first (manually-built) Lambda function's URL was created; the Terraform-managed function needed the second one added explicitly via the AWS CLI, documented directly in `terraform/lambda.tf` as a known manual step alongside the code.
+
+This is a realistic example of infrastructure-as-code not being perfectly self-contained in practice — provider support sometimes lags behind a cloud platform's own new requirements, and documenting the gap honestly is preferable to a `.tf` file that silently doesn't match deployed reality.
 
 ## Setup
 
@@ -127,7 +140,7 @@ Tested against 5 tickets from `tickets.csv`, the model classified all 5 categori
 - [x] Wrap in a lightweight FastAPI service
 - [x] Containerize with Docker
 - [x] Cloud deployment (AWS Lambda, public Function URL)
-- [ ] Infrastructure as code (Terraform)
+- [x] Infrastructure as code (Terraform)
 - [ ] CI/CD pipeline (GitHub Actions)
 - [ ] Simple frontend for submitting and reviewing tickets
 - [ ] Expand and formalise the evaluation dataset beyond the initial 25 sample tickets

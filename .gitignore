@@ -15,3 +15,9 @@ venv/
 # OS / editor clutter
 .DS_Store
 .vscode/
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/AWSCLIV2.pkg
