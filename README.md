@@ -155,10 +155,13 @@ Requires an AWS account with model access granted for Claude Haiku 4.5 in Amazon
 
 ## Screenshots
 
+![Frontend demo](assets/screenshots/frontend-demo.png)
+*Live triage console — a real ticket classified, RAG-matched, and rendered in the browser*
+
 | | |
 |---|---|
-| ![Frontend demo](assets/screenshots/frontend-demo.png) | ![GitHub Actions passing](assets/screenshots/actions-passing.png) |
-| Live triage console | CI/CD pipeline, green on every push |
+| ![CI workflow passing](assets/screenshots/ci-passing.png) | ![Deploy workflow passing](assets/screenshots/deploy-passing.png) |
+| CI: syntax + Docker build check | CD: automatic build, push, and Lambda deploy |
 
 ## Evaluation results
 
