@@ -1,0 +1,41 @@
+ticket_id,title,description,category,priority,assigned_team,edge_case
+INC-0026,Shared calendar not syncing,"Outlook calendar stopped syncing meeting invites from colleagues since this morning.",Software,Medium,Application Support,false
+INC-0027,Cannot print to color printer,"Documents print fine in black and white but color printing produces blank pages.",Hardware,Low,Desktop Support,false
+INC-0028,Laptop battery draining fast,"Battery goes from 100% to 20% within two hours of normal use, started after last update.",Hardware,Low,Desktop Support,false
+INC-0029,SSO login loop,"Signing into the company portal redirects back to the login page repeatedly, never actually logging in.",Access Management,High,Identity & Access,false
+INC-0030,Slack notifications not arriving,"Not receiving desktop notifications for direct messages, even though the app is open.",Software,Low,Application Support,false
+INC-0031,New laptop setup request,"New hire starting Monday needs a laptop imaged with standard software and joined to the domain.",User Provisioning,Medium,Desktop Support,false
+INC-0032,VPN certificate expired,"VPN client shows a certificate error and refuses to connect for the entire remote team.",Network,Critical,Infrastructure,false
+INC-0033,Shared mailbox permissions missing,"New team member cannot access the shared support mailbox despite being added to the distribution list.",Access Management,Medium,Identity & Access,false
+INC-0034,Website returning 502 errors,"Customer-facing website is intermittently returning 502 Bad Gateway errors during peak hours.",Infrastructure,Critical,Infrastructure,false
+INC-0035,Two-factor authentication codes not arriving,"SMS codes for MFA are not being received, blocking login to all internal systems.",Access Management,High,Identity & Access,false
+INC-0036,Software installation blocked by policy,"Trying to install a required design tool but getting a message that installation is blocked by group policy.",Software,Medium,Desktop Support,false
+INC-0037,Backup job failed overnight,"Scheduled database backup job failed last night, no backup available for today.",Database,High,Database Team,false
+INC-0038,Zoom camera not detected,"Video calls show a black screen, camera worked fine yesterday.",Hardware,Low,Desktop Support,false
+INC-0039,Disk space critically low,"Server monitoring alert shows the main application server is at 97% disk usage.",Infrastructure,Critical,Infrastructure,false
+INC-0040,Timesheet system throwing validation error,"Cannot submit weekly timesheet, form shows a generic validation error with no details.",Software,Medium,Business Applications,false
+INC-0041,Guest wifi not working for visitors,"Visitors in the meeting room cannot connect to the guest wireless network.",Network,Medium,Network Team,false
+INC-0042,Phishing email reported by multiple users,"Several employees forwarded the same suspicious invoice email asking to click a payment link.",Security,High,Security Operations,false
+INC-0043,Software license seat limit reached,"Team cannot open the design software because the license seat limit has been reached.",Software,Medium,Application Support,false
+INC-0044,Departing employee account needs disabling,"Employee's last day is today, IT needs to disable all account access by end of day.",User Provisioning,Medium,Identity & Access,false
+INC-0045,Report generation extremely slow,"Monthly report that used to take 2 minutes now takes over 30 minutes to generate.",Database,Medium,Database Team,false
+INC-0046,Laptop screen has dead pixels,"Noticed a cluster of dead pixels in the corner of the laptop screen.",Hardware,Low,Desktop Support,false
+INC-0047,Cannot connect external hard drive,"External hard drive is not recognized by the laptop, worked fine last week.",Hardware,Low,Desktop Support,false
+INC-0048,API integration returning authentication errors,"Third-party API integration started returning 401 errors after the scheduled key rotation.",Software,High,Application Support,false
+INC-0049,Building access badge not working,"Employee badge is not opening the office entrance door this morning.",Infrastructure,Medium,Infrastructure,false
+INC-0050,Excessive spam reaching inbox,"Spam filter seems to have stopped working, inbox flooded with spam since yesterday.",Email,Medium,Messaging Team,false
+INC-0051,it's broken again,"same thing as always, you know what I mean, fix it please",General Support,Low,Service Desk,true
+INC-0052,URGENT URGENT URGENT,"need help asap",General Support,Medium,Service Desk,true
+INC-0053,Two issues today,"My VPN keeps disconnecting AND my monitor is flickering, not sure if related, both started this morning after the update.",Network,Medium,Infrastructure,true
+INC-0054,re: re: fwd: issue,"Following up on the thing we discussed, still not resolved, please advise.",General Support,Low,Service Desk,true
+INC-0055,System down system down,"nothing works nothing at all everything is broken send help",Infrastructure,Critical,Infrastructure,true
+INC-0056,question about expense report,"Where do I submit my expense report for the conference last month?",General Support,Low,Service Desk,true
+INC-0057,thanks for your help,"Just wanted to say the fix you sent yesterday worked great, thank you!",General Support,Low,Service Desk,true
+INC-0058,forgot my desk number,"Can you remind me which desk I'm assigned to on the 3rd floor?",General Support,Low,Service Desk,true
+INC-0059,lol this is annoying,"my computer keeps making a weird beeping noise when I turn it on, kind of funny but also annoying, any ideas?",Hardware,Low,Desktop Support,true
+INC-0060,vpn,"not working",Network,Medium,Infrastructure,true
+INC-0061,Meeting room booking system down for entire building AND payroll system also down,"Both the meeting room booking tool and the payroll system are throwing errors simultaneously since this morning's maintenance window.",Infrastructure,Critical,Infrastructure,true
+INC-0062,what's the weather like today,"just wondering if I need an umbrella",General Support,Low,Service Desk,true
+INC-0063,my dog ate my badge,"need a replacement access badge, my dog chewed up the old one",Infrastructure,Low,Infrastructure,true
+INC-0064,Is this the right place to ask about my payslip,"Not sure if this is IT or HR, but I have a question about a deduction on my payslip.",General Support,Low,Service Desk,true
+INC-0065,CRITICAL bug in the the the system please read this now,"asdkjaslkdj system not working please fix asap thank you",General Support,Low,Service Desk,true

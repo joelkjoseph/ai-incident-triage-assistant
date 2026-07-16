@@ -30,6 +30,7 @@ Coming from an IT support background (application support, incident resolution, 
 - **AWS Lambda + Function URL** — serverless deployment, publicly reachable over HTTPS
 - **Terraform** — infrastructure as code for a reproducible parallel deployment
 - **GitHub Actions** — CI/CD: automated syntax checks and Docker build verification on every push, plus automatic build-push-deploy to Lambda on push to main
+- **Vanilla HTML/CSS/JS frontend** — hosted free on GitHub Pages, calling the live API directly
 
 ## CI/CD
 
@@ -42,7 +43,9 @@ In practice, this means pushing a code change is the only step required to updat
 
 ## Live demo
 
-The API is deployed and publicly reachable:
+**Try it yourself:** [https://joelkjoseph.github.io/ai-incident-triage-assistant/](https://joelkjoseph.github.io/ai-incident-triage-assistant/)
+
+Or call the API directly:
 
 ```bash
 curl -X POST https://fq3bycsnigljfqkd5dfg4sfski0djrpj.lambda-url.us-east-1.on.aws/triage \
@@ -140,9 +143,23 @@ Then visit `http://127.0.0.1:8000/docs`, same as running locally. The vector ind
 
 Requires an AWS account with model access granted for Claude Haiku 4.5 in Amazon Bedrock, and an IAM user with Bedrock permissions.
 
-## Sample results
+## Evaluation results
 
-Tested against 5 tickets from `tickets.csv`, the model classified all 5 categories correctly and, with retrieval enabled, correctly matched each ticket to its most relevant past resolution note. Priority classification showed a mild tendency to over-escalate (e.g. rating a Medium ticket as High) rather than under-escalate — arguably a reasonable bias for a support tool, though it's a tuning point for future iteration.
+Running `evaluate.py` against the full 65-ticket dataset (25 original tickets + 40 additional, including 15 deliberately difficult edge cases) gives a real, measured picture rather than a handful of spot-checks:
+
+| Metric | Result |
+|---|---|
+| Category accuracy | 57/65 (87.7%) |
+| Priority accuracy | 28/65 (43.1%) |
+| Edge cases handled with appropriate caution | 11/15 (73.3%) |
+
+**Category classification is strong.** At this scale, the model reliably identifies what kind of issue a ticket describes, including across terse, vague, and multi-issue inputs.
+
+**Priority classification is a genuine weak point, not just noise.** This confirms a pattern first noticed in early manual testing (see below): the model tends to over-escalate rather than under-escalate priority, for example rating Medium-severity tickets as High. At 65 tickets, this shows up as a real, measurable gap rather than an isolated observation. A likely next step: adding a small number of explicit few-shot priority examples to the system prompt, calibrating what "High" versus "Medium" actually looks like, rather than relying on the model's own judgment of the four-level guidance alone.
+
+**Edge case handling is decent but not solved.** 11 of 15 deliberately difficult inputs (very terse tickets, multi-issue tickets, off-topic messages, ALL-CAPS spam-style urgency) were handled with appropriate caution — either flagged as invalid or given visibly lower confidence. The remaining 4 were confidently misclassified, a concrete area for further guardrail tuning.
+
+Reporting a real weakness alongside the strengths is intentional: a 65-ticket evaluation that only showed good news would be a less credible result than one that surfaces where the system actually struggles.
 
 ## Roadmap
 
@@ -152,8 +169,9 @@ Tested against 5 tickets from `tickets.csv`, the model classified all 5 categori
 - [x] Cloud deployment (AWS Lambda, public Function URL)
 - [x] Infrastructure as code (Terraform)
 - [x] CI/CD pipeline (GitHub Actions)
-- [ ] Simple frontend for submitting and reviewing tickets
-- [ ] Expand and formalise the evaluation dataset beyond the initial 25 sample tickets
+- [x] Simple frontend for submitting and reviewing tickets
+- [x] Expand and formalise the evaluation dataset beyond the initial 25 sample tickets
+- [ ] Add few-shot priority calibration examples to address the over-escalation pattern found during evaluation
 
 ## Author
 
