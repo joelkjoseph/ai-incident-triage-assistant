@@ -1,0 +1,24 @@
+# AWS's own base image for Lambda container functions. Unlike a normal
+# python:3.12-slim image, this one already knows how to speak Lambda's
+# internal "Runtime API" - the protocol Lambda uses to invoke your code,
+# instead of your code running a normal always-on web server.
+FROM public.ecr.aws/lambda/python:3.12
+
+# Lambda's base image sets this as the working directory by convention.
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Build the vector index at image build time, same as before.
+RUN python3 build_index.py
+
+# This tells the Lambda base image which function to call for each
+# request: "api.handler" means "in api.py, call the object named handler"
+# - which is exactly the Mangum-wrapped FastAPI app we already built.
+# Note this is fundamentally different from the normal Dockerfile's CMD,
+# which starts a web server - here we're pointing at a single function
+# that Lambda's runtime calls directly for each incoming request.
+CMD ["api.handler"]

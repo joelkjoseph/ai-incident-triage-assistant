@@ -27,6 +27,17 @@ Coming from an IT support background (application support, incident resolution, 
 - **ChromaDB** — local vector store for retrieval-augmented generation (RAG) over past resolution notes
 - **FastAPI** — exposes triage as an HTTP endpoint with auto-generated interactive docs
 - **Docker** — containerized for consistent, portable deployment
+- **AWS Lambda + Function URL** — serverless deployment, publicly reachable over HTTPS
+
+## Live demo
+
+The API is deployed and publicly reachable:
+
+```bash
+curl -X POST https://fq3bycsnigljfqkd5dfg4sfski0djrpj.lambda-url.us-east-1.on.aws/triage \
+  -H "Content-Type: application/json" \
+  -d '{"description": "printer is showing offline for the whole floor"}'
+```
 
 ## How it works
 
@@ -49,6 +60,16 @@ Early testing surfaced a real failure mode: when given input that wasn't a genui
 The fix was adding an explicit `is_valid_ticket` field to the output schema, with instructions for the model to keep confidence low and flag the item for human review when the input doesn't resemble a genuine support request. After the fix, the same off-topic input was correctly flagged as invalid with confidence dropping from 0.95 to 0.2.
 
 This is the kind of gap that only shows up once you actively try to break your own system — which is exactly what happened here.
+
+## Deploying to serverless: three filesystem issues, one pattern
+
+Getting this running on AWS Lambda surfaced a cluster of related issues, all stemming from the same root cause: Lambda's filesystem is read-only at runtime except for `/tmp`.
+
+1. **ChromaDB's database itself** was baked into the image at a read-only path. Fixed by detecting the Lambda environment at startup and copying the pre-built index into `/tmp` before connecting to it.
+2. **The embedding model's cache directory** defaulted to a path under the user's home folder, also unwritable in Lambda. Fixed by setting `HOME=/tmp` as an environment variable, redirecting where libraries look for a writable cache location.
+3. **Cold start timing**: loading ChromaDB during Lambda's initialization phase came close to the platform's fixed 10-second init limit. Resolved by increasing the function's allocated memory, which proportionally increases available CPU during startup.
+
+None of these were bugs in the application logic — they were all specific to how Lambda's execution environment differs from a normal server, and they only surfaced by actually deploying and reading the real error traces rather than assuming a container that works locally will behave identically in a serverless environment.
 
 ## Setup
 
@@ -105,7 +126,7 @@ Tested against 5 tickets from `tickets.csv`, the model classified all 5 categori
 - [x] Retrieval-augmented generation (RAG) over past resolution notes
 - [x] Wrap in a lightweight FastAPI service
 - [x] Containerize with Docker
-- [ ] Cloud deployment (Amazon ECR + AWS App Runner)
+- [x] Cloud deployment (AWS Lambda, public Function URL)
 - [ ] Infrastructure as code (Terraform)
 - [ ] CI/CD pipeline (GitHub Actions)
 - [ ] Simple frontend for submitting and reviewing tickets

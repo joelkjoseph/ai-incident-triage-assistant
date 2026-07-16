@@ -18,6 +18,7 @@ Run:
 import os
 import json
 import csv
+import shutil
 import chromadb
 from anthropic import AnthropicBedrock
 
@@ -28,8 +29,24 @@ client = AnthropicBedrock()
 # The region prefix here (us.) should match the AWS_REGION you're using.
 BEDROCK_MODEL_ID = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
+
+def get_chroma_path() -> str:
+    """Lambda's filesystem is read-only at runtime except for /tmp. The
+    chroma_db folder is baked into the image at build time (read-only), so
+    when running in Lambda we copy it into /tmp once per cold start before
+    connecting to it. Locally, we just use it directly."""
+    is_lambda = bool(os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+    if not is_lambda:
+        return "./chroma_db"
+
+    tmp_path = "/tmp/chroma_db"
+    if not os.path.exists(tmp_path):
+        shutil.copytree("./chroma_db", tmp_path)
+    return tmp_path
+
+
 # Connect to the vector index built by build_index.py
-chroma_client = chromadb.PersistentClient(path="./chroma_db")
+chroma_client = chromadb.PersistentClient(path=get_chroma_path())
 resolution_notes = chroma_client.get_collection("resolution_notes")
 
 VALID_CATEGORIES = [
